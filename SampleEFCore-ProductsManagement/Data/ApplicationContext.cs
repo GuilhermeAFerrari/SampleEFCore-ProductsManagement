@@ -13,7 +13,11 @@ namespace SampleEFCore_ProductsManagement.Data
                 Database=EFCore_ProductsManagement;
                 User ID=sa;Password=1q2w3e4r@#$;
                 TrustServerCertificate=true");
+        }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationContext).Assembly);
         }
     }
 }
