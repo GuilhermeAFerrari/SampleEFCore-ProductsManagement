@@ -18,7 +18,10 @@ Console.WriteLine("Hello, World!");
 //    Console.WriteLine("There is migrations pending...");
 
 // Diferentes formas de adicionar dados
-InsertData();
+//InsertData();
+
+// Diferentes formas de adicionar dados em massa
+InsertManyData();
 
 static void InsertData()
 {
@@ -36,6 +39,55 @@ static void InsertData()
     //db.Set<Product>().Add(product); // Segunda forma (não é necessário uma propriedade DbSet no meu Contexto)
     //db.Entry(product).State = EntityState.Added; // Terceira forma (forçar o rastreamento do produto)
     //db.Add(product); // Quarta forma (o ef core faz um discovery para verificar o objeto que será adicionado no banco) 
+
+    var rowCount = db.SaveChanges(); // Necessário para persistir os dados na base de dados
+    Console.WriteLine($"Total de registros afetados: {rowCount}");
+}
+
+static void InsertManyData()
+{
+    Product product = new()
+    {
+        Description = "Serviço teste",
+        BarCode = "Bar",
+        Value = 10m,
+        ProductType = ProductType.Servico,
+        Active = true
+    };
+
+    Client client = new()
+    {
+        Name = "Guilherme Ferrari",
+        ZipCode = "11111000",
+        City = "Capivari",
+        State = "SP",
+        Phone = "99000001111"
+    };
+
+    var clientList = new List<Client>()
+    {
+        new Client()
+        {
+            Name = "Cliente 1",
+            ZipCode = "11111000",
+            City = "Capivari",
+            State = "SP",
+            Phone = "99000001111"
+        },
+        new Client()
+        {
+            Name = "Cliente 2",
+            ZipCode = "11111000",
+            City = "Capivari",
+            State = "SP",
+            Phone = "99000001111"
+        }
+    };
+
+    using var db = new ApplicationContext();
+    //db.AddRange(product, client); // Primeira forma (inserindo registros para diferentes entidades)
+    //db.Set<Client>().AddRange(clientList); // Segunda forma (inserindo uma lista de registros para uma mesma entidade)
+    //db.Clients.AddRange(clientList); // Terceira forma (inserindo uma lista de registros para umamesma entidade)
 
     var rowCount = db.SaveChanges(); // Necessário para persistir os dados na base de dados
     Console.WriteLine($"Total de registros afetados: {rowCount}");
