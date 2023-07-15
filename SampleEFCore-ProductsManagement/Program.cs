@@ -1,6 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Identity.Client;
 using SampleEFCore_ProductsManagement.Data;
 using SampleEFCore_ProductsManagement.Domain;
 using SampleEFCore_ProductsManagement.ValueObjects;
@@ -27,8 +28,16 @@ Console.WriteLine("Hello, World!");
 //QueryData();
 
 // Carregar dados de entidades que possuem relacionamentos
+//LoadData();
 
-LoadData();
+// Formas de atualizar dados, com uma consulta e com objeto anonimo
+//UpdateData();
+//UpdateDataAnonynous();
+
+// Formas de remover registros
+//RemoveData();
+
+
 
 static void InsertData()
 {
@@ -128,4 +137,51 @@ static void LoadData()
         .ToList();
     
     Console.WriteLine(orders.Count);
+}
+
+static void UpdateData()
+{
+    using var db = new ApplicationContext();
+
+    var client = db.Clients.FirstOrDefault(c => c.Id == 2);
+
+    client.Name = "Cliente alterado";
+    client.City = "São Paulo";
+    //db.Clients.Update(client); // Dessa forma todos os atributos do clientes vão ser adicionados na query que o entity vai montar para fazer o update, seu eu não informar esse método Update() o comando update atualiza apenas as colunas necessárias
+    db.SaveChanges();
+}
+
+static void UpdateDataAnonynous()
+{
+    using var db = new ApplicationContext();
+
+    // Deve usar a chave primaria para scanear os registros, nesse caso o Id
+    var client = new Client
+    {
+        Id = 2
+    };
+
+    var newClient = new
+    {
+        Name = "Guilherme",
+        City = "Veneza"
+    };
+
+    db.Attach(client);
+    db.Entry(client).CurrentValues.SetValues(newClient);
+    db.SaveChanges();
+}
+
+static void RemoveData()
+{
+    using var db = new ApplicationContext();
+
+    var client = db.Clients.Find(4); // Identificando o registro pelo método Find(), dessa forma o ef faz dois comandos, consulta o registro depois remove
+    //var client = new Client { Id = 3 }; //  Identificando o registro de forma desconectada, dessa forma o ef faz apenas um comando delete
+
+    db.Clients.Remove(client); // Primeira forma de remover dados
+    //db.Remove(client); // Segunda forma de remover dados
+    //db.Entry(client).State = EntityState.Deleted; // Segunda forma de remover dados
+
+    db.SaveChanges();
 }
