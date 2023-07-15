@@ -1,7 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
-using Microsoft.Identity.Client;
 using SampleEFCore_ProductsManagement.Data;
 using SampleEFCore_ProductsManagement.Domain;
 using SampleEFCore_ProductsManagement.ValueObjects;
@@ -9,7 +7,8 @@ using SampleEFCore_ProductsManagement.ValueObjects;
 Console.WriteLine("Hello, World!");
 
 // Executar migrations via código
-//var dbContext = new ApplicationContext();
+var dbContext = new ApplicationContext();
+dbContext.Database.Migrate();
 //dbContext.Database.Migrate();
 
 // Consultar migrations não executadas no banco de dados

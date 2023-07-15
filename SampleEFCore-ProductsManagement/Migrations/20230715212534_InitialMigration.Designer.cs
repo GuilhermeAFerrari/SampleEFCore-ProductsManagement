@@ -12,7 +12,7 @@ using SampleEFCore_ProductsManagement.Data;
 namespace SampleEFCore_ProductsManagement.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20230713231631_InitialMigration")]
+    [Migration("20230715212534_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
