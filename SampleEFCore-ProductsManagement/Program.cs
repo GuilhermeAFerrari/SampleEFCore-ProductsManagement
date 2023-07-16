@@ -7,8 +7,8 @@ using SampleEFCore_ProductsManagement.ValueObjects;
 Console.WriteLine("Hello, World!");
 
 // Executar migrations via código
-var dbContext = new ApplicationContext();
-dbContext.Database.Migrate();
+//var dbContext = new ApplicationContext();
+//dbContext.Database.Migrate();
 //dbContext.Database.Migrate();
 
 // Consultar migrations não executadas no banco de dados
